@@ -18,9 +18,9 @@ public class MainController {
 	private AuthenticationService authService;
 	
 	@PostMapping("/register")
-	public ResponseEntity<AuthenticationResponse> getData(@RequestBody User user) {
+	public ResponseEntity<?> getData(@RequestBody User user) {
 		System.out.println("get the data");
-		return ResponseEntity.ok(authService.register(user));
+		return authService.register(user);
 	}
 	
 	@PostMapping("/login")

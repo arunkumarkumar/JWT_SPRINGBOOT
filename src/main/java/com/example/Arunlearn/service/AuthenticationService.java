@@ -1,6 +1,9 @@
 package com.example.Arunlearn.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -26,11 +29,11 @@ public class AuthenticationService {
 	@Autowired
 	private AuthenticationManager authenticationManager;
 
-	public AuthenticationResponse register(User user) {
+	public ResponseEntity<?> register(User user) {
 
 		if (userrepo.findByUsername(user.getUsername()).isPresent()) {
 
-			return new AuthenticationResponse("UserName is already Exist");
+			return  ResponseEntity.status(HttpStatus.NOT_FOUND).body("UserName Already Exist");
 		}
 
 		User users = new User();
@@ -53,7 +56,7 @@ public class AuthenticationService {
 
 		String accessToken = jwtservice.generateAccessToken(users);
 
-		return new AuthenticationResponse(accessToken);
+		return ResponseEntity.status(HttpStatus.OK).body(new AuthenticationResponse(accessToken));
 
 	}
 
